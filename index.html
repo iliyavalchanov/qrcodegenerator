@@ -39,11 +39,19 @@
     <meta name="theme-color" content="#8b5cf6" />
     <meta name="application-name" content="QR Code Generator" />
     <meta name="msapplication-TileColor" content="#8b5cf6" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <style>
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+      }
+
+      /* Improve touch scrolling on mobile */
+      * {
+        -webkit-overflow-scrolling: touch;
       }
 
       html {
@@ -53,13 +61,16 @@
       body {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        height: 100vh;
+        min-height: 100vh;
+        min-height: 100dvh; /* Dynamic viewport height for mobile */
         padding: 12px;
+        padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
         color: white;
         line-height: 1.5;
-        overflow: hidden;
         transition: all 0.2s ease;
         width: 100%;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
 
       body.drag-over {
@@ -119,7 +130,8 @@
         max-width: 1100px;
         margin: 0 auto;
         width: 100%;
-        height: 100%;
+        min-height: calc(100vh - 24px);
+        min-height: calc(100dvh - 24px); /* Account for body padding */
         box-sizing: border-box;
         padding: 0 16px;
         display: flex;
@@ -159,7 +171,7 @@
         width: 100%;
         box-sizing: border-box;
         flex: 1;
-        min-height: 0;
+        align-items: start;
       }
 
       .card {
@@ -173,7 +185,6 @@
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
-        min-height: 0;
       }
 
       .card h2 {
@@ -402,7 +413,6 @@
 
       .preview-area {
         min-height: 300px;
-        height: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -410,7 +420,6 @@
         border-radius: 12px;
         margin-bottom: 16px;
         background: rgba(255, 255, 255, 0.05);
-        flex: 1;
         padding: 16px;
         box-sizing: border-box;
       }
@@ -455,45 +464,99 @@
       }
 
       @media (max-width: 768px) {
+        body {
+          padding: 8px;
+          padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+          min-height: 100vh;
+          min-height: 100svh; /* Small viewport height for better mobile support */
+        }
+
+        .container {
+          padding: 0 4px;
+          min-height: calc(100vh - 16px);
+          min-height: calc(100svh - 16px);
+        }
+
         .main-content {
           grid-template-columns: 1fr;
-          gap: 12px;
+          gap: 16px;
+          align-items: stretch;
         }
 
         .header {
-          margin-top: 12px;
+          margin-top: 8px;
           margin-bottom: 16px;
         }
 
         .header h1 {
           font-size: 1.8rem;
+          line-height: 1.2;
+        }
+
+        .header p {
+          font-size: 1rem;
+          margin-bottom: 8px;
         }
 
         .card {
           padding: 16px;
+          border-radius: 16px;
         }
 
-        body {
-          padding: 8px;
+        .card h2 {
+          font-size: 1.3rem;
+          margin-bottom: 6px;
         }
 
-        .container {
-          padding: 0 4px;
+        .card p {
+          font-size: 0.85rem;
+          margin-bottom: 16px;
+        }
+
+        .form-group {
+          margin-bottom: 16px;
+        }
+
+        .form-group input[type='text'],
+        .form-select {
+          padding: 16px 18px;
+          font-size: 16px; /* Prevent zoom on iOS */
+          border-radius: 10px;
+        }
+
+        .file-upload-label {
+          padding: 16px 18px;
+          min-height: 60px;
+          border-radius: 10px;
+        }
+
+        .btn {
+          padding: 16px 20px;
+          font-size: 16px;
+          border-radius: 10px;
+          margin-top: 12px;
         }
 
         .preview-area {
-          min-height: 250px;
-          padding: 12px;
+          min-height: 280px;
+          padding: 16px;
+          border-radius: 10px;
         }
 
         .preview-area img {
           width: 100%;
-          height: 100%;
-          max-height: 100%;
+          height: auto;
+          max-height: 300px;
+          object-fit: contain;
         }
 
-        .form-group {
-          margin-bottom: 12px;
+        .drag-overlay {
+          padding: 16px;
+        }
+
+        .drag-message {
+          padding: 24px;
+          border-radius: 12px;
         }
       }
     </style>
