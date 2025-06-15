@@ -2,13 +2,35 @@ import gradio as gr
 import qrcode
 from PIL import Image
 from qrcode.image.styledpil import StyledPilImage
-from qrcode.image.styles.moduledrawers import CircleModuleDrawer
+from qrcode.image.styles.moduledrawers import (
+    SquareModuleDrawer,
+    GappedSquareModuleDrawer, 
+    CircleModuleDrawer,
+    RoundedModuleDrawer,
+    VerticalBarsDrawer,
+    HorizontalBarsDrawer
+)
 from qrcode.image.styles.colormasks import SolidFillColorMask
 import io
 
-def generate_qr(data, logo_file):
+# Style mapping for module drawers
+STYLE_MAP = {
+    'Square': SquareModuleDrawer,
+    'Gapped Square': GappedSquareModuleDrawer,
+    'Circle': CircleModuleDrawer,
+    'Rounded': RoundedModuleDrawer,
+    'Vertical Bars': VerticalBarsDrawer,
+    'Horizontal Bars': HorizontalBarsDrawer
+}
+
+def generate_qr(data, logo_file, style):
     if not data:
         return None
+    
+    # Get the appropriate module drawer
+    module_drawer_class = STYLE_MAP.get(style, CircleModuleDrawer)
+    module_drawer = module_drawer_class()
+    
     qr = qrcode.QRCode(
         version=1,
         error_correction=qrcode.constants.ERROR_CORRECT_H,
@@ -21,7 +43,7 @@ def generate_qr(data, logo_file):
         fill_color="black",
         back_color="white",
         image_factory=StyledPilImage,
-        module_drawer=CircleModuleDrawer(),
+        module_drawer=module_drawer,
         color_mask=SolidFillColorMask()
     ).convert('RGB')
     if logo_file is not None:
@@ -39,16 +61,22 @@ def generate_qr(data, logo_file):
 def main():
     with gr.Blocks(theme=gr.themes.Soft()) as demo:
         gr.Markdown("# <span style='color:#ff5ecb'>QR Code Studio</span>", unsafe_allow_html=True)
-        gr.Markdown("Create stunning, circular QR codes with your custom logo")
+        gr.Markdown("Create stunning QR codes with your custom logo and style")
         with gr.Row():
             with gr.Column():
                 url = gr.Textbox(label="URL or Text", placeholder="https://example.com")
+                style = gr.Dropdown(
+                    label="QR Code Style",
+                    choices=list(STYLE_MAP.keys()),
+                    value="Circle",
+                    interactive=True
+                )
                 logo = gr.File(label="Upload Logo (PNG, JPG, SVG)", file_types=["image"])
                 btn = gr.Button("Generate Beautiful QR Code")
             with gr.Column():
                 qr_img = gr.Image(label="Preview & Download", interactive=False)
                 download = gr.File(label="Download QR Code")
-        btn.click(fn=generate_qr, inputs=[url, logo], outputs=[qr_img, download])
+        btn.click(fn=generate_qr, inputs=[url, logo, style], outputs=[qr_img, download])
     demo.launch()
 
 if __name__ == "__main__":

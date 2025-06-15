@@ -1,7 +1,14 @@
 import qrcode
 from PIL import Image
 from qrcode.image.styledpil import StyledPilImage
-from qrcode.image.styles.moduledrawers import CircleModuleDrawer
+from qrcode.image.styles.moduledrawers import (
+    SquareModuleDrawer,
+    GappedSquareModuleDrawer, 
+    CircleModuleDrawer,
+    RoundedModuleDrawer,
+    VerticalBarsDrawer,
+    HorizontalBarsDrawer
+)
 from qrcode.image.styles.colormasks import SolidFillColorMask
 
 # Google Forms URL for "My top 3 AI assistants"

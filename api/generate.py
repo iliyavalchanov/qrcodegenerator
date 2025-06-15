@@ -3,10 +3,27 @@ import json
 import qrcode
 from PIL import Image
 from qrcode.image.styledpil import StyledPilImage
-from qrcode.image.styles.moduledrawers import CircleModuleDrawer
+from qrcode.image.styles.moduledrawers import (
+    SquareModuleDrawer,
+    GappedSquareModuleDrawer, 
+    CircleModuleDrawer,
+    RoundedModuleDrawer,
+    VerticalBarsDrawer,
+    HorizontalBarsDrawer
+)
 from qrcode.image.styles.colormasks import SolidFillColorMask
 import io
 import base64
+
+# Style mapping for module drawers
+STYLE_MAP = {
+    'square': SquareModuleDrawer,
+    'gapped_square': GappedSquareModuleDrawer,
+    'circle': CircleModuleDrawer,
+    'rounded': RoundedModuleDrawer,
+    'vertical_bars': VerticalBarsDrawer,
+    'horizontal_bars': HorizontalBarsDrawer
+}
 
 class handler(BaseHTTPRequestHandler):
     def do_POST(self):
@@ -17,6 +34,7 @@ class handler(BaseHTTPRequestHandler):
             
             url = data.get('url', '')
             logo_data = data.get('logo', None)
+            style = data.get('style', 'circle')  # Default to circle style
             
             if not url:
                 self.send_response(400)
@@ -24,6 +42,10 @@ class handler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(json.dumps({'error': 'URL is required'}).encode())
                 return
+            
+            # Get the appropriate module drawer
+            module_drawer_class = STYLE_MAP.get(style, CircleModuleDrawer)
+            module_drawer = module_drawer_class()
             
             # Generate QR code
             qr = qrcode.QRCode(
@@ -39,7 +61,7 @@ class handler(BaseHTTPRequestHandler):
                 fill_color="black",
                 back_color="white",
                 image_factory=StyledPilImage,
-                module_drawer=CircleModuleDrawer(),
+                module_drawer=module_drawer,
                 color_mask=SolidFillColorMask()
             ).convert('RGB')
             

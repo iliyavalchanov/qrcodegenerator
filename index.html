@@ -180,6 +180,33 @@
         color: rgba(255, 255, 255, 0.6);
       }
 
+      .form-select {
+        width: 100%;
+        padding: 16px 20px;
+        border: none;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.08);
+        color: white;
+        font-size: 15px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.2s ease;
+        cursor: pointer;
+      }
+
+      .form-select:focus {
+        outline: none;
+        background: rgba(255, 255, 255, 0.12);
+        border-color: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+      }
+
+      .form-select option {
+        background: rgba(50, 50, 50, 0.95);
+        color: white;
+        padding: 10px;
+      }
+
       .file-upload {
         position: relative;
         display: inline-block;
@@ -360,6 +387,18 @@
             </div>
 
             <div class="form-group">
+              <label for="style">QR Code Style</label>
+              <select id="style" name="style" class="form-select">
+                <option value="square">Square</option>
+                <option value="gapped_square">Gapped Square</option>
+                <option value="circle" selected>Circle</option>
+                <option value="rounded">Rounded</option>
+                <option value="vertical_bars">Vertical Bars</option>
+                <option value="horizontal_bars">Horizontal Bars</option>
+              </select>
+            </div>
+
+            <div class="form-group">
               <label>Logo (Optional)</label>
               <div class="file-upload">
                 <input type="file" id="logo" name="logo" accept="image/*" />
@@ -385,7 +424,7 @@
           <div class="preview-area" id="previewArea">
             <div class="preview-placeholder">
               <div style="font-size: 3rem; margin-bottom: 10px">🎯</div>
-              <div>Beautiful circular QR code will appear here</div>
+              <div>Beautiful styled QR code will appear here</div>
             </div>
           </div>
 
@@ -459,6 +498,7 @@
 
         const url = document.getElementById('url').value
         const logoFile = document.getElementById('logo').files[0]
+        const style = document.getElementById('style').value
 
         if (!url) {
           alert('Please enter a URL or text')
@@ -484,6 +524,7 @@
             body: JSON.stringify({
               url: url,
               logo: logoData,
+              style: style,
             }),
           })
 
@@ -520,8 +561,12 @@
 
       function downloadQR() {
         if (currentQRImage) {
+          const url = document.getElementById('url').value
+          const cleanUrl = url.replace(/^https?:\/\//, '').replace(/[^a-zA-Z0-9.-]/g, '_')
+          const filename = `qrcode-${cleanUrl}.png`
+
           const link = document.createElement('a')
-          link.download = 'qr-code.png'
+          link.download = filename
           link.href = currentQRImage
           link.click()
         }
@@ -529,10 +574,11 @@
 
       function clearForm() {
         document.getElementById('qrForm').reset()
+        document.getElementById('style').value = 'circle' // Reset to default style
         document.getElementById('previewArea').innerHTML = `
                 <div class="preview-placeholder">
                     <div style="font-size: 3rem; margin-bottom: 10px;">🎯</div>
-                    <div>Beautiful circular QR code will appear here</div>
+                    <div>Beautiful styled QR code will appear here</div>
                 </div>
             `
         document.getElementById('previewArea').style.display = 'flex'
