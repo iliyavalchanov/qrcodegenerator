@@ -142,13 +142,16 @@
       }
 
       .btn-primary {
-        background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        background: rgba(255, 255, 255, 0.15);
         color: white;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
       }
 
       .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        background: rgba(255, 255, 255, 0.25);
+        transform: translateY(-1px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
       }
 
       .btn-secondary {
