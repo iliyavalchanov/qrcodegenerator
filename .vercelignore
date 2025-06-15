@@ -1,0 +1,9 @@
+app.py
+pobg-quiz.py
+powerofbg.jpeg
+pobg-quiz.png
+*.pyc
+__pycache__/
+.git/
+.DS_Store
+*.md 
