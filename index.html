@@ -18,11 +18,11 @@
       body {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
-        padding: 16px;
+        height: 100vh;
+        padding: 12px;
         color: white;
-        line-height: 1.6;
-        overflow-x: hidden;
+        line-height: 1.5;
+        overflow: hidden;
         transition: all 0.2s ease;
         width: 100%;
       }
@@ -84,14 +84,18 @@
         max-width: 1100px;
         margin: 0 auto;
         width: 100%;
+        height: 100%;
         box-sizing: border-box;
         padding: 0 16px;
+        display: flex;
+        flex-direction: column;
       }
 
       .header {
         text-align: center;
-        margin-top: 40px;
-        margin-bottom: 60px;
+        margin-top: 16px;
+        margin-bottom: 24px;
+        flex-shrink: 0;
       }
 
       .header h1 {
@@ -116,21 +120,25 @@
       .main-content {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 24px;
-        margin-top: 40px;
+        gap: 20px;
         width: 100%;
         box-sizing: border-box;
+        flex: 1;
+        min-height: 0;
       }
 
       .card {
         background: rgba(255, 255, 255, 0.08);
         backdrop-filter: blur(20px);
-        border-radius: 24px;
-        padding: 30px;
+        border-radius: 20px;
+        padding: 20px;
         border: 1px solid rgba(255, 255, 255, 0.15);
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         width: 100%;
         box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
       }
 
       .card h2 {
@@ -145,13 +153,13 @@
 
       .card p {
         opacity: 0.75;
-        margin-bottom: 32px;
-        font-size: 0.95rem;
-        line-height: 1.5;
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+        line-height: 1.4;
       }
 
       .form-group {
-        margin-bottom: 24px;
+        margin-bottom: 16px;
       }
 
       .form-group label {
@@ -271,14 +279,14 @@
 
       .btn {
         width: 100%;
-        padding: 16px 24px;
+        padding: 12px 20px;
         border: none;
-        border-radius: 12px;
-        font-size: 15px;
+        border-radius: 10px;
+        font-size: 14px;
         font-weight: 500;
         cursor: pointer;
         transition: all 0.2s ease;
-        margin-top: 12px;
+        margin-top: 8px;
         letter-spacing: 0.01em;
       }
 
@@ -302,20 +310,21 @@
       }
 
       .preview-area {
-        min-height: 300px;
+        min-height: 200px;
         display: flex;
         align-items: center;
         justify-content: center;
         border: 2px dashed rgba(255, 255, 255, 0.3);
-        border-radius: 15px;
-        margin-bottom: 20px;
+        border-radius: 12px;
+        margin-bottom: 16px;
         background: rgba(255, 255, 255, 0.05);
+        flex: 1;
       }
 
       .preview-area img {
         max-width: 100%;
-        max-height: 300px;
-        border-radius: 10px;
+        max-height: 180px;
+        border-radius: 8px;
       }
 
       .preview-placeholder {
@@ -351,23 +360,40 @@
       @media (max-width: 768px) {
         .main-content {
           grid-template-columns: 1fr;
-          gap: 16px;
+          gap: 12px;
+        }
+
+        .header {
+          margin-top: 12px;
+          margin-bottom: 16px;
         }
 
         .header h1 {
-          font-size: 2rem;
+          font-size: 1.8rem;
         }
 
         .card {
-          padding: 20px;
+          padding: 16px;
         }
 
         body {
-          padding: 12px;
+          padding: 8px;
         }
 
         .container {
-          padding: 0 8px;
+          padding: 0 4px;
+        }
+
+        .preview-area {
+          min-height: 160px;
+        }
+
+        .preview-area img {
+          max-height: 140px;
+        }
+
+        .form-group {
+          margin-bottom: 12px;
         }
       }
     </style>
