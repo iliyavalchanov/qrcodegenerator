@@ -172,22 +172,35 @@
 
       .form-group input[type='text'] {
         width: 100%;
-        padding: 16px 20px;
+        padding: 14px 20px;
         border: none;
         border-radius: 12px;
         background: rgba(255, 255, 255, 0.08);
         color: white;
-        font-size: 15px;
+        font-size: 14px;
         backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.1);
-        transition: all 0.2s ease;
+        transition: all 0.3s ease;
+        font-weight: 500;
+      }
+
+      .form-group input[type='text']:hover {
+        background: rgba(255, 255, 255, 0.12);
+        border-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       }
 
       .form-group input[type='text']:focus {
         outline: none;
-        background: rgba(255, 255, 255, 0.12);
-        border-color: rgba(255, 255, 255, 0.2);
-        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(139, 92, 246, 0.5);
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+        transform: translateY(-1px);
+      }
+
+      .form-group input[type='text']:active {
+        transform: translateY(0);
       }
 
       .form-group input[type='text']::placeholder {
@@ -196,29 +209,61 @@
 
       .form-select {
         width: 100%;
-        padding: 16px 20px;
+        padding: 14px 20px;
         border: none;
         border-radius: 12px;
         background: rgba(255, 255, 255, 0.08);
         color: white;
-        font-size: 15px;
+        font-size: 14px;
         backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.1);
-        transition: all 0.2s ease;
+        transition: all 0.3s ease;
         cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.7)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 16px center;
+        background-size: 16px;
+        padding-right: 50px;
+        font-weight: 500;
+      }
+
+      .form-select:hover {
+        background: rgba(255, 255, 255, 0.12);
+        border-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       }
 
       .form-select:focus {
         outline: none;
-        background: rgba(255, 255, 255, 0.12);
-        border-color: rgba(255, 255, 255, 0.2);
-        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(139, 92, 246, 0.5);
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+        transform: translateY(-1px);
+      }
+
+      .form-select:active {
+        transform: translateY(0);
       }
 
       .form-select option {
-        background: rgba(50, 50, 50, 0.95);
+        background: rgba(30, 30, 40, 0.98);
         color: white;
-        padding: 10px;
+        padding: 12px 16px;
+        font-size: 14px;
+        font-weight: 500;
+        border: none;
+        margin: 0;
+      }
+
+      .form-select option:hover {
+        background: rgba(139, 92, 246, 0.3);
+      }
+
+      .form-select option:checked {
+        background: rgba(139, 92, 246, 0.6);
+        color: white;
       }
 
       .file-upload {
@@ -240,24 +285,34 @@
         align-items: center;
         justify-content: center;
         gap: 10px;
-        padding: 16px 20px;
+        padding: 14px 20px;
         border: 2px dashed rgba(255, 255, 255, 0.25);
         border-radius: 12px;
         cursor: pointer;
-        transition: all 0.2s ease;
-        background: rgba(255, 255, 255, 0.03);
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.08);
         backdrop-filter: blur(10px);
-        min-height: 60px;
+        min-height: 56px;
+        font-weight: 500;
       }
 
       .file-upload-label:hover {
-        border-color: rgba(255, 255, 255, 0.4);
-        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(139, 92, 246, 0.5);
+        background: rgba(255, 255, 255, 0.12);
         transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-style: solid;
       }
 
       .file-upload-label:active {
         transform: translateY(0);
+      }
+
+      .file-upload input[type='file']:focus + .file-upload-label {
+        border-color: rgba(139, 92, 246, 0.5);
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+        border-style: solid;
       }
 
       .upload-content {
@@ -274,7 +329,8 @@
       .upload-text {
         font-size: 14px;
         font-weight: 500;
-        opacity: 0.9;
+        opacity: 0.95;
+        color: rgba(255, 255, 255, 0.9);
       }
 
       .btn {
