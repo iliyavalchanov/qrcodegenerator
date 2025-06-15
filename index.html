@@ -709,6 +709,17 @@
         document.getElementById('previewArea').style.display = 'none'
         document.getElementById('downloadBtn').style.display = 'none'
 
+        // Auto-scroll to loading area on mobile
+        if (window.innerWidth <= 768) {
+          setTimeout(() => {
+            document.getElementById('loading').scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'center',
+              inline: 'nearest'
+            })
+          }, 50)
+        }
+
         try {
           let logoData = null
           if (logoFile) {
@@ -734,9 +745,29 @@
             showPreview(result.image)
           } else {
             alert('Error: ' + (result.error || 'Failed to generate QR code'))
+            // Scroll back to form on mobile after server error
+            if (window.innerWidth <= 768) {
+              setTimeout(() => {
+                document.getElementById('url').scrollIntoView({ 
+                  behavior: 'smooth', 
+                  block: 'start',
+                  inline: 'nearest'
+                })
+              }, 100)
+            }
           }
         } catch (error) {
           alert('Error: ' + error.message)
+          // Scroll back to form on mobile after error
+          if (window.innerWidth <= 768) {
+            setTimeout(() => {
+              document.getElementById('url').scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start',
+                inline: 'nearest'
+              })
+            }, 100)
+          }
         } finally {
           document.getElementById('loading').style.display = 'none'
         }
@@ -756,6 +787,17 @@
         previewArea.innerHTML = `<img src="${imageData}" alt="Generated QR Code">`
         previewArea.style.display = 'flex'
         document.getElementById('downloadBtn').style.display = 'block'
+        
+        // Auto-scroll to preview on mobile
+        if (window.innerWidth <= 768) {
+          setTimeout(() => {
+            previewArea.scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'start',
+              inline: 'nearest'
+            })
+          }, 100) // Small delay to ensure content is rendered
+        }
       }
 
       function downloadQR() {
@@ -783,6 +825,17 @@
         document.getElementById('previewArea').style.display = 'flex'
         document.getElementById('downloadBtn').style.display = 'none'
         currentQRImage = null
+
+        // Auto-scroll to top of form on mobile after clear
+        if (window.innerWidth <= 768) {
+          setTimeout(() => {
+            document.getElementById('url').scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'start',
+              inline: 'nearest'
+            })
+          }, 100)
+        }
       }
 
       // Update file upload label when file is selected
