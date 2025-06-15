@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QR Code Studio</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+        color: white;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .header h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .header p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+      }
+
+      .main-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        margin-top: 40px;
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .card h2 {
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .card p {
+        opacity: 0.8;
+        margin-bottom: 30px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+
+      .form-group input[type='text'] {
+        width: 100%;
+        padding: 15px;
+        border: none;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        font-size: 16px;
+        backdrop-filter: blur(5px);
+      }
+
+      .form-group input[type='text']::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .file-upload {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+      }
+
+      .file-upload input[type='file'] {
+        position: absolute;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+      }
+
+      .file-upload-label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 15px;
+        border: 2px dashed rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .file-upload-label:hover {
+        border-color: rgba(255, 255, 255, 0.5);
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .btn {
+        width: 100%;
+        padding: 15px;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+      }
+
+      .btn-primary {
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .preview-area {
+        min-height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px dashed rgba(255, 255, 255, 0.3);
+        border-radius: 15px;
+        margin-bottom: 20px;
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .preview-area img {
+        max-width: 100%;
+        max-height: 300px;
+        border-radius: 10px;
+      }
+
+      .preview-placeholder {
+        text-align: center;
+        opacity: 0.6;
+      }
+
+      .loading {
+        display: none;
+        text-align: center;
+        padding: 20px;
+      }
+
+      .spinner {
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top: 3px solid white;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 10px;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .main-content {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .header h1 {
+          font-size: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🎯 QR Code Studio</h1>
+        <p>Create stunning, circular QR codes with your custom logo</p>
+      </div>
+
+      <div class="main-content">
+        <div class="card">
+          <h2>🔗 Create Your Beautiful QR Code</h2>
+          <p>Enter your URL and optionally add a custom logo for a professional look</p>
+
+          <form id="qrForm">
+            <div class="form-group">
+              <label for="url">URL or Text</label>
+              <input type="text" id="url" name="url" placeholder="https://example.com" required />
+            </div>
+
+            <div class="form-group">
+              <label>Logo (Optional)</label>
+              <div class="file-upload">
+                <input type="file" id="logo" name="logo" accept="image/*" />
+                <label for="logo" class="file-upload-label"> 📤 Upload Logo (PNG, JPG, SVG) </label>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">✨ Generate Beautiful QR Code</button>
+
+            <button type="button" class="btn btn-secondary" onclick="clearForm()">Clear</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <h2>👁️ Preview & Download</h2>
+          <p>Your beautiful circular QR code will appear here</p>
+
+          <div class="preview-area" id="previewArea">
+            <div class="preview-placeholder">
+              <div style="font-size: 3rem; margin-bottom: 10px">🎯</div>
+              <div>Beautiful circular QR code will appear here</div>
+            </div>
+          </div>
+
+          <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <div>Generating your beautiful QR code...</div>
+          </div>
+
+          <button
+            id="downloadBtn"
+            class="btn btn-primary"
+            style="display: none"
+            onclick="downloadQR()">
+            💾 Download QR Code
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let currentQRImage = null
+
+      document.getElementById('qrForm').addEventListener('submit', async function (e) {
+        e.preventDefault()
+
+        const url = document.getElementById('url').value
+        const logoFile = document.getElementById('logo').files[0]
+
+        if (!url) {
+          alert('Please enter a URL or text')
+          return
+        }
+
+        // Show loading
+        document.getElementById('loading').style.display = 'block'
+        document.getElementById('previewArea').style.display = 'none'
+        document.getElementById('downloadBtn').style.display = 'none'
+
+        try {
+          let logoData = null
+          if (logoFile) {
+            logoData = await fileToBase64(logoFile)
+          }
+
+          const response = await fetch('/api/generate', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              url: url,
+              logo: logoData,
+            }),
+          })
+
+          const result = await response.json()
+
+          if (result.success) {
+            currentQRImage = result.image
+            showPreview(result.image)
+          } else {
+            alert('Error: ' + (result.error || 'Failed to generate QR code'))
+          }
+        } catch (error) {
+          alert('Error: ' + error.message)
+        } finally {
+          document.getElementById('loading').style.display = 'none'
+        }
+      })
+
+      function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader()
+          reader.readAsDataURL(file)
+          reader.onload = () => resolve(reader.result)
+          reader.onerror = (error) => reject(error)
+        })
+      }
+
+      function showPreview(imageData) {
+        const previewArea = document.getElementById('previewArea')
+        previewArea.innerHTML = `<img src="${imageData}" alt="Generated QR Code">`
+        previewArea.style.display = 'flex'
+        document.getElementById('downloadBtn').style.display = 'block'
+      }
+
+      function downloadQR() {
+        if (currentQRImage) {
+          const link = document.createElement('a')
+          link.download = 'qr-code.png'
+          link.href = currentQRImage
+          link.click()
+        }
+      }
+
+      function clearForm() {
+        document.getElementById('qrForm').reset()
+        document.getElementById('previewArea').innerHTML = `
+                <div class="preview-placeholder">
+                    <div style="font-size: 3rem; margin-bottom: 10px;">🎯</div>
+                    <div>Beautiful circular QR code will appear here</div>
+                </div>
+            `
+        document.getElementById('previewArea').style.display = 'flex'
+        document.getElementById('downloadBtn').style.display = 'none'
+        currentQRImage = null
+      }
+
+      // Update file upload label when file is selected
+      document.getElementById('logo').addEventListener('change', function (e) {
+        const label = document.querySelector('.file-upload-label')
+        if (e.target.files.length > 0) {
+          label.textContent = `📤 ${e.target.files[0].name}`
+        } else {
+          label.textContent = '📤 Upload Logo (PNG, JPG, SVG)'
+        }
+      })
+    </script>
+  </body>
+</html>
